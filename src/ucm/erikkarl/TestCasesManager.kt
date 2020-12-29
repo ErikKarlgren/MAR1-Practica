@@ -4,6 +4,8 @@ import java.io.File
 import java.util.*
 import kotlin.system.measureNanoTime
 
+typealias Component = Either<Int, List<Int>>
+
 /**
  * Reads test files, executes them and writes the results in another file
  */

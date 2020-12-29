@@ -6,38 +6,42 @@ public abstract class Either<A, B> {
     @Override
     public abstract String toString();
 
+    public abstract Object getValue();
+
     private Either() {
     }
 
 
     public static final class Left<A, B> extends Either<A, B> {
-        private final A left;
+        private final A value;
 
-        public A getValue() { return left; }
+        public Left(A value) {
+            this.value = value;
+        }
+
+        @Override
+        public A getValue() { return value; }
 
         @Override
         public String toString() {
-            return String.valueOf(this.left);
-        }
-
-        public Left(A left) {
-            this.left = left;
+            return String.valueOf(this.value);
         }
     }
 
 
     public static final class Right<A, B> extends Either<A, B> {
-        private final B right;
+        private final B value;
 
-        public B getValue() { return right; }
+        public Right(B value) {
+            this.value = value;
+        }
+
+        @Override
+        public B getValue() { return value; }
 
         @Override
         public String toString() {
-            return String.valueOf(this.right);
-        }
-
-        public Right(B right) {
-            this.right = right;
+            return String.valueOf(this.value);
         }
     }
 }
