@@ -1,1 +1,0 @@
-package ucm.erikkarlobject Main {    @JvmStatic    fun main(args: Array<String>) {        GraphCLI.showIntroduction()        while (true) {            GraphCLI.readCommand()        }    }}
