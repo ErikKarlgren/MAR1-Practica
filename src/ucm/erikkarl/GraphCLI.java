@@ -39,10 +39,9 @@ public final class GraphCLI {
     }
 
     public static void showIntroduction() {
-        System.out.println("This program allows you to create a graph manually or read test cases from a file.");
-        System.out.println("Please, refer to the commands below to start using this program.");
-        System.out.println();
-        showHelp();
+        System.out.println("This program allows you to create a graph manually, read test cases from a file," +
+                " and even create random test files.");
+        System.out.println("Write \"" + Command.HELP + "\" for help.\n");
     }
 
     private static void showHelp() {
@@ -53,13 +52,13 @@ public final class GraphCLI {
 
     private static void solve() {
         var initTime = System.currentTimeMillis();
-        System.out.println(Exercise4.INSTANCE.solve(graph));
+        System.out.println(Exercise4.solve(graph));
         var finalTime = System.currentTimeMillis();
         System.out.println("Elapsed time: " + (finalTime - initTime) + " ms");
     }
 
     private static void runTest() {
-        System.out.println("Name of file: ");
+        System.out.print("Name of file: ");
         var fileName = stdin.nextLine();
 
         if (fileName != null && new File(fileName).exists()) {
