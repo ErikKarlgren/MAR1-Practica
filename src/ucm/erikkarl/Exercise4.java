@@ -96,6 +96,7 @@ public final class Exercise4 {
                     result.add(new Either.Right<>(component));
                 else
                     result.add(new Either.Left<>(component.getFirst()));
+                //result.add(new Either.Right<>(component));
             }
         }
         return result;
@@ -119,6 +120,8 @@ public final class Exercise4 {
         for (Map.Entry<Integer, Set<Integer>> entry : graph) {
             var node = entry.getKey();
             var adjacents = entry.getValue();
+            // Nodes with no other adjacent nodes still exist in the transpose graph
+            transpose.addNode(node);
             for (Integer adj : adjacents) {
                 transpose.addEdges(adj, List.of(node));
             }

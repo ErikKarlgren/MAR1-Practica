@@ -93,13 +93,15 @@ object TestCasesManager {
         // Groups lines by each test/graph
         testCases.add(mutableListOf())
         for (line in fileLines) {
-            if (!line.trim().equals("")) {
+            if (!line.trim().equals(RandomTestCasesCreator.START_OF_TEST)) {
                 testCases.last.add(line.trim())
             } else {
                 testCases.add(mutableListOf())
             }
         }
 
+        // the first element is an empty string
+        testCases.removeFirst()
         // Creates the graphs
         for (test in testCases) {
             graphs.add(createGraph(test))
@@ -113,7 +115,12 @@ object TestCasesManager {
 
         while (iterator.hasNext()) {
             val node = iterator.next().toInt()
-            val adjacents = iterator.next().split(' ').map { it.toInt() }
+            val adjacentsString = iterator.next()
+            var adjacents = listOf<Int>()
+
+            if(!adjacentsString.equals(""))
+                adjacents = adjacentsString.split(' ').map { it.toInt() }
+
             graph.addEdges(node, adjacents)
         }
         return graph
