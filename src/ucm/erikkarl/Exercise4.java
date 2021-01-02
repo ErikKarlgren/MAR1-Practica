@@ -15,12 +15,6 @@ public final class Exercise4 {
     private Exercise4() {
     }
 
-    public enum Color {
-        WHITE,
-        GRAY,
-        BLACK
-    }
-
     public static List<Either<Integer, List<Integer>>> solve(Graph<Integer> graph) {
         try {
             return topologicalOrdering(graph);
@@ -38,7 +32,7 @@ public final class Exercise4 {
         return colors;
     }
 
-    private static Optional<Integer> firstUnvisitedNode(Map<Integer, Color> colors){
+    private static Optional<Integer> firstUnvisitedNode(Map<Integer, Color> colors) {
         var node = colors.entrySet()
                 .stream()
                 .filter(x -> x.getValue() == Color.WHITE)
@@ -64,7 +58,8 @@ public final class Exercise4 {
             switch (colors.get(adj)) {
                 case WHITE -> topologicalDFSVisit(graph, adj, colors, topologicalOrder);
                 case GRAY -> throw new IllegalArgumentException("There's a loop, so there's no topological order");
-                case BLACK -> {}
+                case BLACK -> {
+                }
             }
         }
 
@@ -96,7 +91,6 @@ public final class Exercise4 {
                     result.add(new Either.Right<>(component));
                 else
                     result.add(new Either.Left<>(component.getFirst()));
-                //result.add(new Either.Right<>(component));
             }
         }
         return result;
@@ -127,5 +121,11 @@ public final class Exercise4 {
             }
         }
         return transpose;
+    }
+
+    public enum Color {
+        WHITE,
+        GRAY,
+        BLACK
     }
 }

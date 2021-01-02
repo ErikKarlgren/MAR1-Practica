@@ -1,53 +1,14 @@
 package ucm.erikkarl;
 
 import java.io.*;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 
 public final class TestCasesManager {
     private TestCasesManager() {
-    }
-
-
-    public static final class TestCaseResults {
-        private final float totalElapsedTime;
-        private final int numberOfCases;
-        private final List<Result> results;
-
-        public static final class Result {
-            public final double timeElapsed;
-            public final String resultAsString;
-
-            private Result(float time, String str) {
-                timeElapsed = time;
-                resultAsString = str;
-            }
-        }
-
-        public final float mediumElapsedTimePerCase() {
-            return this.numberOfCases > 0 ? this.totalElapsedTime / (long) this.numberOfCases : 0f;
-        }
-
-        public final float getTotalElapsedTime() {
-            return this.totalElapsedTime;
-        }
-
-        public final int getNumberOfCases() {
-            return this.numberOfCases;
-        }
-
-        public final List<Result> getResults() {
-            return this.results;
-        }
-
-        private TestCaseResults(float totalElapsedTime, int numberOfCases, List<Result> results) {
-            this.totalElapsedTime = totalElapsedTime;
-            this.numberOfCases = numberOfCases;
-            this.results = results;
-        }
-
     }
 
     public static TestCaseResults runTest(String fileName) {
@@ -144,5 +105,44 @@ public final class TestCasesManager {
             graph.addEdges(node, adjacents);
         }
         return graph;
+    }
+
+    public static final class TestCaseResults {
+        private final float totalElapsedTime;
+        private final int numberOfCases;
+        private final List<Result> results;
+
+        private TestCaseResults(float totalElapsedTime, int numberOfCases, List<Result> results) {
+            this.totalElapsedTime = totalElapsedTime;
+            this.numberOfCases = numberOfCases;
+            this.results = results;
+        }
+
+        public final float mediumElapsedTimePerCase() {
+            return this.numberOfCases > 0 ? this.totalElapsedTime / (long) this.numberOfCases : 0f;
+        }
+
+        public final float getTotalElapsedTime() {
+            return this.totalElapsedTime;
+        }
+
+        public final int getNumberOfCases() {
+            return this.numberOfCases;
+        }
+
+        public final List<Result> getResults() {
+            return this.results;
+        }
+
+        public static final class Result {
+            public final double timeElapsed;
+            public final String resultAsString;
+
+            private Result(float time, String str) {
+                timeElapsed = time;
+                resultAsString = str;
+            }
+        }
+
     }
 }

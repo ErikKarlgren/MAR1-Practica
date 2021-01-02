@@ -3,14 +3,13 @@ package ucm.erikkarl;
 
 public abstract class Either<A, B> {
 
+    private Either() {
+    }
+
     @Override
     public abstract String toString();
 
     public abstract Object getValue();
-
-    private Either() {
-    }
-
 
     public static final class Left<A, B> extends Either<A, B> {
         private final A value;
@@ -20,7 +19,9 @@ public abstract class Either<A, B> {
         }
 
         @Override
-        public A getValue() { return value; }
+        public A getValue() {
+            return value;
+        }
 
         @Override
         public String toString() {
@@ -37,7 +38,9 @@ public abstract class Either<A, B> {
         }
 
         @Override
-        public B getValue() { return value; }
+        public B getValue() {
+            return value;
+        }
 
         @Override
         public String toString() {

@@ -2,18 +2,26 @@ package ucm.erikkarl;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
 public final class RandomTestCasesCreator {
-    private static final Random RANDOM = new Random();
     public static final String START_OF_TEST = "graph:";
-
+    private static final Random RANDOM = new Random();
     private final int numberOfCases;
     private final int nodesPerGraph;
     private final List<Integer> nodesRange;
+
+    public RandomTestCasesCreator(int numberOfCases, int nodesPerGraph) {
+        this.numberOfCases = numberOfCases;
+        this.nodesPerGraph = nodesPerGraph;
+        this.nodesRange = IntStream.rangeClosed(1, nodesPerGraph).boxed().collect(Collectors.toUnmodifiableList());
+    }
 
     public final void createTests(String fileName) {
         var stringBuilder = new StringBuilder();
@@ -60,11 +68,5 @@ public final class RandomTestCasesCreator {
         }
         assert !usedNumbers.isEmpty();
         return usedNumbers;
-    }
-
-    public RandomTestCasesCreator(int numberOfCases, int nodesPerGraph) {
-        this.numberOfCases = numberOfCases;
-        this.nodesPerGraph = nodesPerGraph;
-        this.nodesRange = IntStream.rangeClosed(1, nodesPerGraph).boxed().collect(Collectors.toUnmodifiableList());
     }
 }

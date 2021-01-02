@@ -3,7 +3,7 @@ package ucm.erikkarl;
 public final class Main {
     public static void main(String[] args) {
         GraphCLI.showIntroduction();
-        while(true) {
+        while (true) {
             GraphCLI.readCommand();
         }
     }

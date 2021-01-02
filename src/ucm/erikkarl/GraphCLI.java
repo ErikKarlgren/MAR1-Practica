@@ -7,8 +7,11 @@ import java.util.stream.Collectors;
 
 
 public final class GraphCLI {
-    private static Graph<Integer> graph = new Graph<>();
     private static final Scanner stdin = new Scanner(System.in);
+    private static Graph<Integer> graph = new Graph<>();
+
+    private GraphCLI() {
+    }
 
     private static void createTest() {
         System.out.print("Number of random tests: ");
@@ -152,9 +155,6 @@ public final class GraphCLI {
         System.out.print("Node: ");
         var node = readNumber();
         graph.addNode(node);
-    }
-
-    private GraphCLI() {
     }
 
 

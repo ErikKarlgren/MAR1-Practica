@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * Class that represents a directed graph.
- *
+ * <p>
  * Uses a map internally so each node has a corresponding list of
  * adjacent nodes.
  */
