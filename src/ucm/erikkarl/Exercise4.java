@@ -7,7 +7,7 @@ import java.util.*;
  * Implementar o Java o en C++ un algoritmo, que dado un grafo dirigido,
  * detecte si tiene o no ciclos. En caso de ser aciclico, ha de listar
  * sus vertices en orden topologico. Si hay mas de uno posible, los
- * puede listar en cualquiera de ellos. En caso de ser cıclico, ha de
+ * puede listar en cualquiera de ellos. En caso de ser ciclico, ha de
  * listar sus componentes fuertemente conexas como conjuntos de vertices.
  */
 public final class Exercise4 {
