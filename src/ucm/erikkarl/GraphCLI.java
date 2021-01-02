@@ -51,10 +51,10 @@ public final class GraphCLI {
     }
 
     private static void solve() {
-        var initTime = System.currentTimeMillis();
+        var initTime = System.nanoTime();
         System.out.println(Exercise4.solve(graph));
-        var finalTime = System.currentTimeMillis();
-        System.out.println("Elapsed time: " + (finalTime - initTime) + " ms");
+        var finalTime = System.nanoTime();
+        System.out.println("Elapsed time: " + ((finalTime - initTime) / 1000000.0) + " ms");
     }
 
     private static void runTest() {
@@ -62,12 +62,10 @@ public final class GraphCLI {
         var fileName = stdin.nextLine();
 
         if (fileName != null && new File(fileName).exists()) {
-            var results = TestCasesManager.INSTANCE.runTest(fileName);
+            var results = TestCasesManager.runTest(fileName);
             System.out.println("Total number of cases: " + results.getNumberOfCases());
-            System.out.println("Medium elapsed time per graph: " +
-                    TestCasesManager.INSTANCE.nanoToMilliseconds(results.mediumElapsedTimePerCase()) + " ms");
-            System.out.println("Total elapsed time: " +
-                    TestCasesManager.INSTANCE.nanoToMilliseconds(results.getTotalElapsedTime()) + " ms");
+            System.out.println("Medium elapsed time per graph: " + results.mediumElapsedTimePerCase() + " ms");
+            System.out.println("Total elapsed time: " + results.getTotalElapsedTime() + " ms");
         } else {
             var currentPath = System.getProperty("user.dir");
             System.err.println("File does not exist in " + currentPath);
