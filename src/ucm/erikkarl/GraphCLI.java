@@ -1,7 +1,6 @@
 // GraphCLI.java
 package ucm.erikkarl;
 
-import java.io.File;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -46,7 +45,7 @@ public final class GraphCLI {
 
     private static void showHelp() {
         for (Command c : Command.values()) {
-            System.out.println(c.toString() + "\n\t" + c.getHelp() + "\n");
+            System.out.println("> " + c.toString() + "\n" + c.getHelp() + "\n");
         }
     }
 
@@ -60,9 +59,8 @@ public final class GraphCLI {
     private static void runTest() {
         System.out.print("Name of file: ");
         var fileName = stdin.nextLine();
-
-        if (fileName != null && new File(fileName).exists()) {
-            var results = TestCasesManager.runTest(fileName);
+        var results = TestCasesManager.runTest(fileName);
+        if (results != null) {
             System.out.println("Total number of cases: " + results.getNumberOfCases());
             System.out.println("Medium elapsed time per graph: " + results.mediumElapsedTimePerCase() + " ms");
             System.out.println("Total elapsed time: " + results.getTotalElapsedTime() + " ms");
@@ -135,14 +133,6 @@ public final class GraphCLI {
             try {
                 nodes = formatToNodesList.apply(line);
                 validInput = true;
-
-                /*if (!line.isBlank()){
-                    nodes = formatToNodesList.apply(line);
-                    validInput = true;
-                }
-                else {
-                    System.err.println("Invalid input: write a list of numbers.");
-                }*/
             } catch (NumberFormatException e) {
                 System.err.println("Invalid input: write a list of numbers.");
             }
