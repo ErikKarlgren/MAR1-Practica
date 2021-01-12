@@ -5,14 +5,29 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-
+/**
+ * Interfaz por consola que permite modificar un grafo y consultar el orden topologico de sus nodos
+ * o sus componentes conexas segun proceda. Tambien permite hacer esto ultimo con grafos especificados
+ * por ficheros de texto que siguen un formato concreto o incluso crear un fichero del estilo.
+ */
 public final class GraphCLI {
+    /**
+     * Scanner que lee de la entrada estandar.
+     */
     private static final Scanner stdin = new Scanner(System.in);
+    /**
+     * Grafo que se mantiene en memoria el cual puede modificar el usuario.
+     */
     private static Graph<Integer> graph = new Graph<>();
 
     private GraphCLI() {
     }
 
+    /**
+     * Crea un fichero de test con grafos aleatorios.
+     * Pide al usuario especificar el numero de grafos, el numero de nodos
+     * de cada uno y el nombre de un fichero donde guardar los datos del test.
+     */
     private static void createTest() {
         System.out.print("Number of random tests: ");
         int numTests = readNumber();
@@ -24,7 +39,7 @@ public final class GraphCLI {
         System.out.print("Name of file: ");
         var fileName = readFileName();
 
-        testCreator.createTests(fileName);
+        testCreator.createTestFile(fileName);
         System.out.println("Test created in file " + fileName + '.');
     }
 
@@ -40,18 +55,29 @@ public final class GraphCLI {
         }
     }
 
+    /**
+     * Muestra una introduccion al programa.
+     */
     public static void showIntroduction() {
         System.out.println("This program allows you to create a graph manually, read test cases from a file," +
                 " and even create random test files.");
         System.out.println("Write \"" + Command.HELP + "\" for help.\n");
     }
 
+    /**
+     * Muestra los comandos disponibles y su uso.
+     */
     private static void showHelp() {
         for (Command c : Command.values()) {
             System.out.println("> " + c.toString() + "\n" + c.getHelp() + "\n");
         }
     }
 
+    /**
+     * Aplica el algoritmo especificado por el enunciado del ejercicio 4 de la practica
+     * sobre el grafo {@link #graph}, es decir, haya el orden topologico de sus nodos
+     * si no tiene bucles, y en caso contrario sus componentes fuertemente conexas.
+     */
     private static void solve() {
         var initTime = System.nanoTime();
         System.out.println(Exercise4.solve(graph));
@@ -59,20 +85,33 @@ public final class GraphCLI {
         System.out.println("Elapsed time: " + ((finalTime - initTime) / 1000000.0) + " ms");
     }
 
+    /**
+     * Pide al usuario el nombre de un fichero de test y delega la lectura del fichero
+     * y la ejecucion del test. Despues, imprime algunos datos sobre los resultados por
+     * consola. Estos datos mas la solucion
+     */
     private static void runTest() {
         System.out.print("Name of file: ");
-        var fileName = stdin.nextLine();
+        var fileName = readFileName();
         var results = TestCasesManager.runTest(fileName);
         if (results != null) {
             System.out.println("Total number of cases: " + results.getNumberOfCases());
             System.out.println("Medium elapsed time per graph: " + results.mediumElapsedTimePerCase() + " ms");
             System.out.println("Total elapsed time: " + results.getTotalElapsedTime() + " ms");
+            System.out.println("Results saved to " + results.getFileResultsName());
         } else {
             var currentPath = System.getProperty("user.dir");
             System.err.println("File does not exist in " + currentPath);
         }
     }
 
+    /**
+     * Muestra una representacion del grafo {@link #graph} por consola usando el
+     * siguiente formato para cada nodo del grafo.
+     * <p>
+     * <code>Node: nodo -> [lista de nodos adyacentes]</code>
+     * <p>
+     */
     private static void showGraph() {
         if (!graph.iterator().hasNext()) {
             // If there are no nodes in the graph, the iterator has no next element
@@ -86,10 +125,17 @@ public final class GraphCLI {
         }
     }
 
+    /**
+     * El grafo {@link #graph} pasa a estar vacio, sin nodos.
+     */
     private static void resetGraph() {
         graph = new Graph<>();
     }
 
+    /**
+     * Lee el nombre de un fichero por consola. No tiene por que existir pues esta funcion
+     * puede ser usada para leer el nombre de un fichero a crear.
+     */
     private static String readFileName() {
         String line = "";
         boolean validInput = false;
@@ -105,6 +151,9 @@ public final class GraphCLI {
         return line.trim();
     }
 
+    /**
+     * Lee un solo entero por consola.
+     */
     private static int readNumber() {
         String line;
         int number = 0;
@@ -124,6 +173,9 @@ public final class GraphCLI {
         return number;
     }
 
+    /**
+     * Lee una lista de nodos por consola. Todos deben ser enteros separados por espacios.
+     */
     private static List<Integer> readNodesList() {
         Function<String, List<Integer>> formatToNodesList = (String x) ->
                 Arrays.stream(x.split(" ")).map(Integer::valueOf).collect(Collectors.toList());
@@ -143,6 +195,10 @@ public final class GraphCLI {
         return nodes;
     }
 
+    /**
+     * Pide al usuario un nodo y una lista de nodos adyacentes y
+     * modifica el grafo {@link #graph}.
+     */
     private static void addEdges() {
         System.out.print("Node: ");
         var node = readNumber();
@@ -151,13 +207,19 @@ public final class GraphCLI {
         graph.addEdges(node, nodes);
     }
 
+    /**
+     * Pide al usuario un nodo que añadir al grafo {@link #graph}.
+     */
     private static void addNode() {
         System.out.print("Node: ");
         var node = readNumber();
         graph.addNode(node);
     }
 
-
+    /**
+     * Clase para representar un comando. Cada comando tiene un mensaje propio de ayuda que se puede
+     * consultar con el comando "help".
+     */
     private enum Command {
         ADD_NODE {
             public String getHelp() {
@@ -239,7 +301,6 @@ public final class GraphCLI {
         };
 
         public abstract String getHelp();
-
         public abstract void execute();
 
         @Override
