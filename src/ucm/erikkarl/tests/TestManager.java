@@ -24,25 +24,28 @@ public final class TestManager {
      * devuelve los resultados en un <code>Optional</code>. Si el fichero
      * no existe devuelve un <code>Optional</code> vacio.
      */
-    public static Optional<TestResults> runTest(String fileName, boolean writeToFile) {
+    public static Optional<TestResults> runTest(String fileName) {
         File file = new File(fileName);
         if (file.exists()) {
             TestResults results = TestRunner.run(TestFileParser.parse(file));
-            if (writeToFile)
-                TestResultsWriterToFile.writeSolutions(results, file);
+            TestResultsWriter.writeSolutionsToFile(results, file);
+            TestResultsWriter.writeExecutionTimeToFile(results, file);
             return Optional.of(results);
         } else {
             return Optional.empty();
         }
     }
 
-    public static String graphToString(Graph<Integer> graph){
+    /**
+     * Devuelve una representacion como cadena de texto de un grafo.
+     */
+    public static String graphToString(Graph<Integer> graph) {
         var sb = new StringBuilder();
         sb.append(TestManager.START_OF_TEST).append('\n');
 
-        for (Map.Entry<Integer, Set<Integer>> entry: graph){
+        for (Map.Entry<Integer, Set<Integer>> entry : graph) {
             sb.append(entry.getValue()).append('\n');
-            for(Integer n: entry.getValue())
+            for (Integer n : entry.getValue())
                 sb.append(n).append(' ');
             sb.append('\n');
         }

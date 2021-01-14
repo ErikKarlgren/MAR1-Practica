@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 final class TestRunner {
+    private static final int MS_LIMIT = 10;
+    private static final long NS_LIMIT = MS_LIMIT * 1000000L;
 
     private TestRunner() {
     }
@@ -40,23 +42,22 @@ final class TestRunner {
 
         // Si el test dura menos de 10 ms, se repite 100 veces.
         // Lo hacemos al menos 3 veces.
-        while (elapsedTimeInNs < 10 * 1000000 && loops < loopsLimit) {
+        while (loops < loopsLimit) {
             long startTime = System.nanoTime();
             solution = Exercise4.solve(graph);
             long finalTime = System.nanoTime();
             elapsedTimeInNs += finalTime - startTime;
             loops++;
 
-            if (!loopsLimitSet && (finalTime - startTime) < 10 * 1000000) {
+            if (!loopsLimitSet && (finalTime - startTime) < NS_LIMIT) {
                 loopsLimit = 100;
                 loopsLimitSet = true;
             }
         }
         // Calculamos la media de los tiempos de ejecucion del test
-        assert loops > 0;
         elapsedTimeInNs /= loops;
         float elapsedTimeInMs = (float) (elapsedTimeInNs / 1000000.0);
 
-        return new TestResults.Result(elapsedTimeInMs, solution.toString());
+        return new TestResults.Result(elapsedTimeInMs, solution, graph.getNumberOfNodes());
     }
 }

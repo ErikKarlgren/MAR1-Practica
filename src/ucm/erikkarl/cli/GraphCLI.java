@@ -97,13 +97,20 @@ public final class GraphCLI {
     static void runTest() {
         System.out.print("Name of file: ");
         var fileName = readFileName();
-        var resultsOpt = TestManager.runTest(fileName, true);
+        System.out.println("Executing test...");
+
+        long startTime = System.currentTimeMillis();
+        var resultsOpt = TestManager.runTest(fileName);
+        long finalTime = System.currentTimeMillis();
+
         if (resultsOpt.isPresent()) {
             var results = resultsOpt.get();
             System.out.println("Total number of cases: " + results.getNumberOfCases());
             System.out.println("Medium elapsed time per graph: " + results.mediumElapsedTimePerCase() + " ms");
-            System.out.println("Total elapsed time: " + results.getTotalElapsedTime() + " ms");
-            System.out.println("Results saved to " + results.getFileResultsName());
+            System.out.println("Total medium elapsed time: " + results.getTotalMediumElapsedTime() + " ms");
+            System.out.println("Actual elapsed time: " + (finalTime - startTime) + " ms");
+            System.out.println("Solutions saved to " + results.getSolutionsFileName());
+            System.out.println("Execution times saved to " + results.getExecutionTimeFileName());
         } else {
             var currentPath = System.getProperty("user.dir");
             System.err.println("File does not exist in " + currentPath);

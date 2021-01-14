@@ -4,15 +4,15 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-final class TestResultsWriterToFile {
-    private TestResultsWriterToFile() {
+final class TestResultsWriter {
+    private TestResultsWriter() {
     }
 
     /**
      * Escribe los resultados del test en un fichero nuevo cuyo nombre se forma a partir del
      * de <code>originalFile</code>.
      */
-    static void writeSolutions(TestResults testResults, File originalFile) {
+    static void writeSolutionsToFile(TestResults testResults, File originalFile) {
         String solutionsFileName = ridOfExtension(originalFile.getName()) + "-result.txt";
 
         try (var solutionsFile = new FileWriter(solutionsFileName)) {
@@ -22,21 +22,30 @@ final class TestResultsWriterToFile {
                 resultsStrBuilder.append("Result: ").append(result.getResultAsString()).append("\n\n");
             }
             solutionsFile.write(prelude(testResults) + resultsStrBuilder.toString());
-            testResults.setFileResultsName(solutionsFileName);
+            testResults.setSolutionsFileName(solutionsFileName);
+
         } catch (IOException e) {
             System.err.println("Error: cannot write results to " + solutionsFileName);
         }
     }
 
-    static void writeExecutionTimeResults(TestResults results, File originalFile){
+    /**
+     * Escribe en una columna el numero de nodos de cada grafo y en otra el tiempo de ejecucion
+     * del algoritmo. El fichero deberia poder ser leido por gnuplot.
+     */
+    static void writeExecutionTimeToFile(TestResults results, File originalFile) {
         String executionTimeFileName = ridOfExtension(originalFile.getName()) + "-times.txt";
 
-        try(var executionTimeFile = new FileWriter(executionTimeFileName)){
-            var strBuilder = new StringBuilder();
-            strBuilder.append("# Nodes\t Time\n");
-            for(TestResults.Result result : results.getResults()){
-                //strBuilder.append(result.get)
+        try (var executionTimeFile = new FileWriter(executionTimeFileName)) {
+            executionTimeFile.write("# Nodes\t Time\n");
+
+            for (TestResults.Result result : results.getResults()) {
+                var line = String.format("%d\t %f\n",
+                        result.getGraphNodesNumber(),
+                        result.getMeanTimeElapsed());
+                executionTimeFile.write(line);
             }
+            results.setExecutionTimeFileName(executionTimeFileName);
         } catch (IOException e) {
             System.err.println("Error: cannot write results to " + executionTimeFileName);
         }
@@ -57,7 +66,7 @@ final class TestResultsWriterToFile {
                 # Medium elapsed time per case: %f ms
                 """;
         return String.format(preludeString,
-                results.getTotalElapsedTime(),
+                results.getTotalMediumElapsedTime(),
                 results.getNumberOfCases(),
                 results.mediumElapsedTimePerCase());
     }

@@ -18,6 +18,10 @@ public final class Graph<T> implements Iterable<Map.Entry<T, Set<T>>> {
         this.nodeToAdjacentNodes = new LinkedHashMap<>();
     }
 
+    public int getNumberOfNodes() {
+        return nodeToAdjacentNodes.keySet().size();
+    }
+
     /**
      * Adds a node to the graph with no adjacent nodes.
      *
@@ -45,6 +49,7 @@ public final class Graph<T> implements Iterable<Map.Entry<T, Set<T>>> {
 
     /**
      * Returns a set of all the adjacent nodes to <code>node</code>.
+     *
      * @param node Node whose adjacent nodes will be returned.
      * @return Set of nodes adjacent to <code>node</code>.
      */

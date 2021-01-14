@@ -1,5 +1,7 @@
 package ucm.erikkarl.tests;
 
+import ucm.erikkarl.Either;
+
 import java.util.List;
 
 /**
@@ -10,13 +12,14 @@ import java.util.List;
  * asi lo desea el usuario.
  */
 public final class TestResults {
-    private final float totalElapsedTime;
+    private final float totalMediumElapsedTime;
     private final int numberOfCases;
     private final List<Result> results;
-    private String fileResultsName;
+    private String solutionsFileName;
+    private String executionTimeFileName;
 
     TestResults(float totalElapsedTime, int numberOfCases, List<Result> results) {
-        this.totalElapsedTime = totalElapsedTime;
+        this.totalMediumElapsedTime = totalElapsedTime;
         this.numberOfCases = numberOfCases;
         this.results = results;
     }
@@ -25,11 +28,11 @@ public final class TestResults {
      * @return Tiempo medio de ejecucion de cada test en nanosegundos.
      */
     public final float mediumElapsedTimePerCase() {
-        return this.numberOfCases > 0 ? this.totalElapsedTime / (long) this.numberOfCases : 0f;
+        return this.numberOfCases > 0 ? this.totalMediumElapsedTime / (long) this.numberOfCases : 0f;
     }
 
-    public final float getTotalElapsedTime() {
-        return this.totalElapsedTime;
+    public final float getTotalMediumElapsedTime() {
+        return this.totalMediumElapsedTime;
     }
 
     public final int getNumberOfCases() {
@@ -40,13 +43,17 @@ public final class TestResults {
         return this.results;
     }
 
-    public String getFileResultsName() {
-        return fileResultsName;
+    public String getSolutionsFileName() {
+        return solutionsFileName;
     }
 
-    public void setFileResultsName(String fileResultsName) {
-        this.fileResultsName = fileResultsName;
+    public void setSolutionsFileName(String solutionsFileName) {
+        this.solutionsFileName = solutionsFileName;
     }
+
+    public String getExecutionTimeFileName() { return executionTimeFileName; }
+
+    public void setExecutionTimeFileName(String executionTimeFileName) { this.executionTimeFileName = executionTimeFileName; }
 
     /**
      * Contiene el tiempo necesario para calcular la solucion
@@ -55,19 +62,29 @@ public final class TestResults {
      */
     public static final class Result {
         private final double meanTimeElapsed;
-        private final String resultAsString;
+        private final List<Either<Integer, List<Integer>>> result;
+        private final int graphNodesNumber;
 
-        public Result(float time, String str) {
+        public Result(float time, List<Either<Integer, List<Integer>>> result, int graphNodesNumber) {
             meanTimeElapsed = time;
-            resultAsString = str;
+            this.result = result;
+            this.graphNodesNumber = graphNodesNumber;
         }
 
         public double getMeanTimeElapsed() {
             return meanTimeElapsed;
         }
 
+        public List<Either<Integer, List<Integer>>> getResult() {
+            return result;
+        }
+
         public String getResultAsString() {
-            return resultAsString;
+            return result.toString();
+        }
+
+        public int getGraphNodesNumber() {
+            return graphNodesNumber;
         }
     }
 }
