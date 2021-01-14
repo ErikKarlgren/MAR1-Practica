@@ -54,12 +54,20 @@ public final class TestResults {
      * cadena de texto.
      */
     public static final class Result {
-        public final double timeElapsed;
-        public final String resultAsString;
+        private final double meanTimeElapsed;
+        private final String resultAsString;
 
         public Result(float time, String str) {
-            timeElapsed = time;
+            meanTimeElapsed = time;
             resultAsString = str;
+        }
+
+        public double getMeanTimeElapsed() {
+            return meanTimeElapsed;
+        }
+
+        public String getResultAsString() {
+            return resultAsString;
         }
     }
 }

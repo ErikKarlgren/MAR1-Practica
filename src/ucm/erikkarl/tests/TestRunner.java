@@ -1,5 +1,6 @@
 package ucm.erikkarl.tests;
 
+import ucm.erikkarl.Either;
 import ucm.erikkarl.Exercise4;
 import ucm.erikkarl.Graph;
 
@@ -15,19 +16,47 @@ final class TestRunner {
      * Ejecuta el algoritmo sobre los grafos de la lista <code>graphs</code>.
      */
     static TestResults run(List<Graph<Integer>> graphs) {
-        long totalElapsedTime = 0;
+        float totalElapsedTimeInMs = 0;
         List<TestResults.Result> results = new LinkedList<>();
 
         for (Graph<Integer> graph : graphs) {
-            long startTime = System.nanoTime();
-            var solution = Exercise4.solve(graph);
-            long elapsedTime = System.nanoTime() - startTime;
-            double elapsedTimeInMilliseconds = elapsedTime / 1000000.0;
-            totalElapsedTime += elapsedTime;
-            results.add(new TestResults.Result((float) elapsedTimeInMilliseconds, solution.toString()));
+            var result = runTest(graph);
+            results.add(result);
+            totalElapsedTimeInMs += result.getMeanTimeElapsed();
         }
 
-        return new TestResults((float) (totalElapsedTime / 1000000.0), graphs.size(), results);
+        return new TestResults(totalElapsedTimeInMs, graphs.size(), results);
     }
 
+    /**
+     * Ejecuta el test sobre el grafo <code>graph</code> y devuelve su resultado.
+     */
+    private static TestResults.Result runTest(Graph<Integer> graph) {
+        List<Either<Integer, List<Integer>>> solution = new LinkedList<>();
+        long elapsedTimeInNs = 0;
+        int loops = 0;
+        int loopsLimit = 3;
+        boolean loopsLimitSet = false;
+
+        // Si el test dura menos de 10 ms, se repite 100 veces.
+        // Lo hacemos al menos 3 veces.
+        while (elapsedTimeInNs < 10 * 1000000 && loops < loopsLimit) {
+            long startTime = System.nanoTime();
+            solution = Exercise4.solve(graph);
+            long finalTime = System.nanoTime();
+            elapsedTimeInNs += finalTime - startTime;
+            loops++;
+
+            if (!loopsLimitSet && (finalTime - startTime) < 10 * 1000000) {
+                loopsLimit = 100;
+                loopsLimitSet = true;
+            }
+        }
+        // Calculamos la media de los tiempos de ejecucion del test
+        assert loops > 0;
+        elapsedTimeInNs /= loops;
+        float elapsedTimeInMs = (float) (elapsedTimeInNs / 1000000.0);
+
+        return new TestResults.Result(elapsedTimeInMs, solution.toString());
+    }
 }

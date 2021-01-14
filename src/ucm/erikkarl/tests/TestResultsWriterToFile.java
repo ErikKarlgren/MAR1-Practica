@@ -1,12 +1,8 @@
 package ucm.erikkarl.tests;
 
-import ucm.erikkarl.Graph;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Map;
-import java.util.Set;
 
 final class TestResultsWriterToFile {
     private TestResultsWriterToFile() {
@@ -22,8 +18,8 @@ final class TestResultsWriterToFile {
         try (var solutionsFile = new FileWriter(solutionsFileName)) {
             var resultsStrBuilder = new StringBuilder();
             for (TestResults.Result result : testResults.getResults()) {
-                resultsStrBuilder.append("Time: ").append(result.timeElapsed).append(" ms\n");
-                resultsStrBuilder.append("Result: ").append(result.resultAsString).append("\n\n");
+                resultsStrBuilder.append("Time: ").append(result.getMeanTimeElapsed()).append(" ms\n");
+                resultsStrBuilder.append("Result: ").append(result.getResultAsString()).append("\n\n");
             }
             solutionsFile.write(prelude(testResults) + resultsStrBuilder.toString());
             testResults.setFileResultsName(solutionsFileName);
