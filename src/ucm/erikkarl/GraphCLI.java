@@ -1,6 +1,9 @@
 // GraphCLI.java
 package ucm.erikkarl;
 
+import ucm.erikkarl.tests.RandomTestCasesCreator;
+import ucm.erikkarl.tests.TestManager;
+
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -93,8 +96,9 @@ public final class GraphCLI {
     private static void runTest() {
         System.out.print("Name of file: ");
         var fileName = readFileName();
-        var results = TestCasesManager.runTest(fileName);
-        if (results != null) {
+        var resultsOpt = TestManager.runTest(fileName, true);
+        if (resultsOpt.isPresent()) {
+            var results = resultsOpt.get();
             System.out.println("Total number of cases: " + results.getNumberOfCases());
             System.out.println("Medium elapsed time per graph: " + results.mediumElapsedTimePerCase() + " ms");
             System.out.println("Total elapsed time: " + results.getTotalElapsedTime() + " ms");

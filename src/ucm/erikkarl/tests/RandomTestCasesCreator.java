@@ -1,4 +1,4 @@
-package ucm.erikkarl;
+package ucm.erikkarl.tests;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static ucm.erikkarl.TestCasesManager.START_OF_TEST;
+import static ucm.erikkarl.tests.TestManager.START_OF_TEST;
 
 /**
  * Clase que crea tests aleatorios. El usuario especifica el numero de grafos
