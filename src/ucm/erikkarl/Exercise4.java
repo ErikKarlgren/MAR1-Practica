@@ -111,7 +111,7 @@ public final class Exercise4 {
     /**
      * Calcula las componentes conexas del grafo <code>graph</code> usando el algoritmo de Kosaraju.
      * <p>
-     * Primero, recorre todo el algoritmo por busqueda en profundidad y va añadiendo los nodos a una lista
+     * Primero, recorre todo el algoritmo por busqueda en profundidad y va anadiendo los nodos a una lista
      * en el mismo orden que termina de recorrer cada uno.
      * <p>
      * Segundo, calcula el grafo transpuesto de <code>graph</code>, y lo recorre tambien mediante busqueda
@@ -149,7 +149,7 @@ public final class Exercise4 {
     }
 
     /**
-     * Funcion para visitar los nodos de <code>graph</code> en profundidad. Añade a la lista
+     * Funcion para visitar los nodos de <code>graph</code> en profundidad. Anade a la lista
      * <code>nodesList</code> los nodos que se van recorriendo.
      *
      * @param graph     Grafo que se visita.

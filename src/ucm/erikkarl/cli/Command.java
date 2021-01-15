@@ -82,6 +82,21 @@ enum Command {
         public void execute() {
             GraphCLI.createRandomTest();
         }
+    },
+    BIG_TEST {
+        @Override
+        public String getHelp() {
+            return
+                    "Creates a random test file, but each graph has a different size. The first 9 have" +
+                    "1, 2,.. 9 nodes. The next 9 have 10, 20, ... 90 nodes, and so on until the last 9" +
+                    "graphs, which have 1000, 2000, ..., 9000 nodes." +
+                    "This test file is made to be later run with gnuplot.\n";
+        }
+
+        @Override
+        public void execute() {
+            GraphCLI.createBigTest();
+        }
     };
 
     public abstract String getHelp();

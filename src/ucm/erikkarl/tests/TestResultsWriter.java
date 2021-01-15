@@ -60,11 +60,9 @@ final class TestResultsWriter {
     }
 
     private static String prelude(TestResults results) {
-        String preludeString = """
-                # Total elapsed time: %f ms
-                # Total number of cases: %d
-                # Medium elapsed time per case: %f ms
-                """;
+        String preludeString = "# Total elapsed time: %f ms\n" +
+                "# Total number of cases: %d\n" +
+                "# Medium elapsed time per case: %f ms\n";
         return String.format(preludeString,
                 results.getTotalMediumElapsedTime(),
                 results.getNumberOfCases(),

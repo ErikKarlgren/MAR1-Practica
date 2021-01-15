@@ -50,7 +50,7 @@ public final class RandomGraphGenerator {
             if (unusedNodes.isEmpty())
                 unusedNodes = createUnusedNodesList();
             var n = unusedNodes.pop();
-            if (n == node.intValue())
+            if (n != node.intValue())
                 usedNodes.add(n);
         }
         assert !usedNodes.isEmpty();

@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ucm.erikkarl.tests.TestManager.START_OF_TEST;
+import static ucm.erikkarl.tests.TestManager.START_OF_GRAPH;
 
 final class TestFileParser {
     private TestFileParser() {
@@ -27,7 +27,7 @@ final class TestFileParser {
         try (var br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
-                if (!line.trim().equals(START_OF_TEST))
+                if (!line.trim().equals(START_OF_GRAPH))
                     testCases.getLast().add(line.trim());
                 else
                     testCases.add(new LinkedList<>());

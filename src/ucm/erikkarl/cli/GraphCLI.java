@@ -2,7 +2,8 @@ package ucm.erikkarl.cli;
 
 import ucm.erikkarl.Exercise4;
 import ucm.erikkarl.Graph;
-import ucm.erikkarl.tests.RandomTestCasesCreator;
+import ucm.erikkarl.tests.BigTestCreator;
+import ucm.erikkarl.tests.RandomTestCreator;
 import ucm.erikkarl.tests.TestManager;
 
 import java.util.*;
@@ -38,7 +39,7 @@ public final class GraphCLI {
 
         System.out.print("Number of nodes per graph: ");
         int numNodes = readNumber();
-        var testCreator = new RandomTestCasesCreator(numTests, numNodes);
+        var testCreator = new RandomTestCreator(numTests, numNodes);
 
         System.out.print("Name of file: ");
         var fileName = readFileName();
@@ -220,7 +221,7 @@ public final class GraphCLI {
     }
 
     /**
-     * Pide al usuario un nodo que añadir al grafo {@link #graph}.
+     * Pide al usuario un nodo que anadir al grafo {@link #graph}.
      */
     static void addNode() {
         System.out.print("Node: ");
@@ -228,4 +229,23 @@ public final class GraphCLI {
         graph.addNode(node);
     }
 
+    static void createBigTest() {
+        long startTime;
+        long finalTime;
+        String fileName;
+
+        System.out.print("Name of file: ");
+        fileName = readFileName();
+        System.out.printf("Creating big test in %s...%n", fileName);
+
+        startTime = System.currentTimeMillis();
+        BigTestCreator.create(fileName);
+        finalTime = System.currentTimeMillis();
+
+        System.out.printf("File finished writing! Time required: %d ms%n", (finalTime - startTime));
+    }
+
+    public static void printMessage(String msg) {
+        System.out.println(msg);
+    }
 }

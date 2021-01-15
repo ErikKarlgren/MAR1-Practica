@@ -14,7 +14,7 @@ import java.util.Set;
  * de su ejecucion.
  */
 public final class TestManager {
-    public static final String START_OF_TEST = "graph:";
+    public static final String START_OF_GRAPH = "graph:";
 
     private TestManager() {
     }
@@ -41,10 +41,10 @@ public final class TestManager {
      */
     public static String graphToString(Graph<Integer> graph) {
         var sb = new StringBuilder();
-        sb.append(TestManager.START_OF_TEST).append('\n');
+        sb.append(TestManager.START_OF_GRAPH).append('\n');
 
         for (Map.Entry<Integer, Set<Integer>> entry : graph) {
-            sb.append(entry.getValue()).append('\n');
+            sb.append(entry.getKey()).append('\n');
             for (Integer n : entry.getValue())
                 sb.append(n).append(' ');
             sb.append('\n');
