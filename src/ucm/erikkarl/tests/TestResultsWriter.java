@@ -37,11 +37,12 @@ final class TestResultsWriter {
         String executionTimeFileName = ridOfExtension(originalFile.getName()) + "-times.txt";
 
         try (var executionTimeFile = new FileWriter(executionTimeFileName)) {
-            executionTimeFile.write("# Nodes\t Time\n");
+            executionTimeFile.write("# Nodes\t Edges\t Time\n");
 
             for (TestResults.Result result : results.getResults()) {
-                var line = String.format("%d\t %f\n",
+                var line = String.format("%d\t %d\t %f%n",
                         result.getGraphNodesNumber(),
+                        result.getGraphEdgesNumber(),
                         result.getMeanTimeElapsed());
                 executionTimeFile.write(line);
             }

@@ -51,9 +51,13 @@ public final class TestResults {
         this.solutionsFileName = solutionsFileName;
     }
 
-    public String getExecutionTimeFileName() { return executionTimeFileName; }
+    public String getExecutionTimeFileName() {
+        return executionTimeFileName;
+    }
 
-    public void setExecutionTimeFileName(String executionTimeFileName) { this.executionTimeFileName = executionTimeFileName; }
+    public void setExecutionTimeFileName(String executionTimeFileName) {
+        this.executionTimeFileName = executionTimeFileName;
+    }
 
     /**
      * Contiene el tiempo necesario para calcular la solucion
@@ -64,11 +68,16 @@ public final class TestResults {
         private final double meanTimeElapsed;
         private final List<Either<Integer, List<Integer>>> result;
         private final int graphNodesNumber;
+        private final int graphEdgesNumber;
 
-        public Result(float time, List<Either<Integer, List<Integer>>> result, int graphNodesNumber) {
+        public Result(float time,
+                      List<Either<Integer, List<Integer>>> result,
+                      int graphNodesNumber,
+                      int graphEdgesNumber) {
             meanTimeElapsed = time;
             this.result = result;
             this.graphNodesNumber = graphNodesNumber;
+            this.graphEdgesNumber = graphEdgesNumber;
         }
 
         public double getMeanTimeElapsed() {
@@ -85,6 +94,10 @@ public final class TestResults {
 
         public int getGraphNodesNumber() {
             return graphNodesNumber;
+        }
+
+        public int getGraphEdgesNumber() {
+            return graphEdgesNumber;
         }
     }
 }

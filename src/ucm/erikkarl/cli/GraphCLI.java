@@ -1,14 +1,8 @@
 package ucm.erikkarl.cli;
 
-import ucm.erikkarl.Exercise4;
-import ucm.erikkarl.Graph;
 import ucm.erikkarl.tests.BigTestCreator;
 import ucm.erikkarl.tests.RandomTestCreator;
 import ucm.erikkarl.tests.TestManager;
-
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Interfaz por consola que permite modificar un grafo y consultar el orden topologico de sus nodos
@@ -16,14 +10,7 @@ import java.util.stream.Collectors;
  * por ficheros de texto que siguen un formato concreto o incluso crear un fichero del estilo.
  */
 public final class GraphCLI {
-    /**
-     * Scanner que lee de la entrada estandar.
-     */
-    static final Scanner stdin = new Scanner(System.in);
-    /**
-     * Grafo que se mantiene en memoria el cual puede modificar el usuario.
-     */
-    private static Graph<Integer> graph = new Graph<>();
+
 
     private GraphCLI() {
     }
@@ -35,14 +22,14 @@ public final class GraphCLI {
      */
     static void createRandomTest() {
         System.out.print("Number of random tests: ");
-        int numTests = readNumber();
+        int numTests = CLIReader.readNumber();
 
         System.out.print("Number of nodes per graph: ");
-        int numNodes = readNumber();
+        int numNodes = CLIReader.readNumber();
         var testCreator = new RandomTestCreator(numTests, numNodes);
 
         System.out.print("Name of file: ");
-        var fileName = readFileName();
+        var fileName = CLIReader.readFileName();
 
         testCreator.createTestFile(fileName);
         System.out.println("Test created in file " + fileName + '.');
@@ -50,8 +37,7 @@ public final class GraphCLI {
 
     public static void readCommand() {
         System.out.print(">>> ");
-        String commandText = stdin.nextLine();
-        var optionalCommand = Arrays.stream(Command.values()).filter(x -> x.toString().equals(commandText)).findFirst();
+        var optionalCommand = CLIReader.readCommand();
         if (optionalCommand.isPresent())
             optionalCommand.get().execute();
         else {
@@ -64,8 +50,9 @@ public final class GraphCLI {
      * Muestra una introduccion al programa.
      */
     public static void showIntroduction() {
-        System.out.println("This program allows you to create a graph manually, read test cases from a file," +
-                " and even create random test files.");
+        System.out.println("This program allows you to read and create random test files to calculate a graph's " +
+                "topological order (if there are no loops) or their strongly connected components (if there's at least " +
+                "one loop).");
         System.out.println("Write \"" + Command.HELP + "\" for help.\n");
     }
 
@@ -79,25 +66,13 @@ public final class GraphCLI {
     }
 
     /**
-     * Aplica el algoritmo especificado por el enunciado del ejercicio 4 de la practica
-     * sobre el grafo {@link #graph}, es decir, haya el orden topologico de sus nodos
-     * si no tiene bucles, y en caso contrario sus componentes fuertemente conexas.
-     */
-    static void solve() {
-        var initTime = System.nanoTime();
-        System.out.println(Exercise4.solve(graph));
-        var finalTime = System.nanoTime();
-        System.out.println("Elapsed time: " + ((finalTime - initTime) / 1000000.0) + " ms");
-    }
-
-    /**
      * Pide al usuario el nombre de un fichero de test y delega la lectura del fichero
      * y la ejecucion del test. Despues, imprime algunos datos sobre los resultados por
      * consola. Estos datos mas la solucion
      */
     static void runTest() {
         System.out.print("Name of file: ");
-        var fileName = readFileName();
+        var fileName = CLIReader.readFileName();
         System.out.println("Executing test...");
 
         long startTime = System.currentTimeMillis();
@@ -118,124 +93,19 @@ public final class GraphCLI {
         }
     }
 
-    /**
-     * Muestra una representacion del grafo {@link #graph} por consola usando el
-     * siguiente formato para cada nodo del grafo.
-     * <p>
-     * <code>Node: nodo -> [lista de nodos adyacentes]</code>
-     * <p>
-     */
-    static void showGraph() {
-        if (!graph.iterator().hasNext()) {
-            // If there are no nodes in the graph, the iterator has no next element
-            System.out.println("Graph is empty");
-        } else {
-            for (Map.Entry<Integer, Set<Integer>> entry : graph) {
-                var node = entry.getKey();
-                var adjacents = entry.getValue();
-                System.out.println("Node: " + node + "\t -> " + adjacents);
-            }
-        }
-    }
 
     /**
-     * El grafo {@link #graph} pasa a estar vacio, sin nodos.
+     * Pide al usuario el nombre de un fichero de test y crea un "big test": un test
+     * donde cada grafo tiene un numero distinto de nodos y en orden creciente hasta
+     * llegar a los miles de nodos por grafo.
      */
-    static void resetGraph() {
-        graph = new Graph<>();
-    }
-
-    /**
-     * Lee el nombre de un fichero por consola. No tiene por que existir pues esta funcion
-     * puede ser usada para leer el nombre de un fichero a crear.
-     */
-    static String readFileName() {
-        String line = "";
-        boolean validInput = false;
-
-        while (!validInput) {
-            line = stdin.nextLine();
-            if (!line.isBlank() && !line.contains(" "))
-                validInput = true;
-            else {
-                System.err.println("Invalid input: file name shouldn't be blank nor have whitespaces.");
-            }
-        }
-        return line.trim();
-    }
-
-    /**
-     * Lee un solo entero por consola.
-     */
-    static int readNumber() {
-        String line;
-        int number = 0;
-        boolean validInput = false;
-
-        while (!validInput) {
-            line = stdin.nextLine();
-            try {
-                number = Integer.parseInt(line);
-                validInput = true;
-
-            } catch (NumberFormatException e) {
-                System.err.println("Invalid input: write a number.");
-            }
-        }
-
-        return number;
-    }
-
-    /**
-     * Lee una lista de nodos por consola. Todos deben ser enteros separados por espacios.
-     */
-    static List<Integer> readNodesList() {
-        Function<String, List<Integer>> formatToNodesList = (String x) ->
-                Arrays.stream(x.split(" ")).map(Integer::valueOf).collect(Collectors.toList());
-        String line;
-        List<Integer> nodes = new LinkedList<>();
-        boolean validInput = false;
-
-        while (!validInput) {
-            line = stdin.nextLine();
-            try {
-                nodes = formatToNodesList.apply(line);
-                validInput = true;
-            } catch (NumberFormatException e) {
-                System.err.println("Invalid input: write a list of numbers.");
-            }
-        }
-        return nodes;
-    }
-
-    /**
-     * Pide al usuario un nodo y una lista de nodos adyacentes y
-     * modifica el grafo {@link #graph}.
-     */
-    static void addEdges() {
-        System.out.print("Node: ");
-        var node = readNumber();
-        System.out.print("Adjacent nodes: ");
-        var nodes = readNodesList();
-        graph.addEdges(node, nodes);
-    }
-
-    /**
-     * Pide al usuario un nodo que anadir al grafo {@link #graph}.
-     */
-    static void addNode() {
-        System.out.print("Node: ");
-        var node = readNumber();
-        graph.addNode(node);
-    }
-
     static void createBigTest() {
         long startTime;
         long finalTime;
         String fileName;
 
         System.out.print("Name of file: ");
-        fileName = readFileName();
+        fileName = CLIReader.readFileName();
         System.out.printf("Creating big test in %s...%n", fileName);
 
         startTime = System.currentTimeMillis();

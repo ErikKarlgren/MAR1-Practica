@@ -1,6 +1,7 @@
 package ucm.erikkarl.tests;
 
 import ucm.erikkarl.cli.GraphCLI;
+import ucm.erikkarl.graph.RandomGraphGenerator;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

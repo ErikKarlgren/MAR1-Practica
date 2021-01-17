@@ -1,6 +1,4 @@
-package ucm.erikkarl.tests;
-
-import ucm.erikkarl.Graph;
+package ucm.erikkarl.graph;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -20,13 +18,14 @@ public final class RandomGraphGenerator {
     private final Integer nodesInGraph;
     private final List<Integer> range;
 
-    RandomGraphGenerator(int nodes) {
-        assert nodes >= 0;
+    public RandomGraphGenerator(int nodes) {
+        if (nodes < 0)
+            throw new IllegalArgumentException("Number of nodes cannot be negative");
         nodesInGraph = nodes;
         range = IntStream.rangeClosed(1, nodesInGraph).boxed().collect(Collectors.toUnmodifiableList());
     }
 
-    Graph<Integer> createGraph() {
+    public Graph<Integer> createGraph() {
         var graph = new Graph<Integer>();
         var nodes = createUnusedNodesList();
 

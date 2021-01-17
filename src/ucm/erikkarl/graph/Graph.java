@@ -1,4 +1,4 @@
-package ucm.erikkarl;
+package ucm.erikkarl.graph;
 
 import java.util.*;
 
@@ -20,6 +20,14 @@ public final class Graph<T> implements Iterable<Map.Entry<T, Set<T>>> {
 
     public int getNumberOfNodes() {
         return nodeToAdjacentNodes.keySet().size();
+    }
+
+    public int getNumberOfEdges() {
+        int edges = 0;
+        for (Map.Entry<T, Set<T>> entry : this) {
+            edges += entry.getValue().size();
+        }
+        return edges;
     }
 
     /**

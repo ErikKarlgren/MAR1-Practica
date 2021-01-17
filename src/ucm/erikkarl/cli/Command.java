@@ -5,35 +5,6 @@ package ucm.erikkarl.cli;
  * consultar con el comando "help".
  */
 enum Command {
-    ADD_NODE {
-        public String getHelp() {
-            return "Adds a node to the graph without any adjacent nodes.";
-        }
-
-        public void execute() {
-            GraphCLI.addNode();
-        }
-    },
-    ADD_EDGES {
-        public String getHelp() {
-            return "Creates directed edges that go from a source node to other nodes. Neither the source" +
-                    " nor the destiny nodes have to exist already in the graph. The destiny nodes must have a space" +
-                    " between them.";
-        }
-
-        public void execute() {
-            GraphCLI.addEdges();
-        }
-    },
-    RESET {
-        public String getHelp() {
-            return "Resets the graph. It will have no nodes.";
-        }
-
-        public void execute() {
-            GraphCLI.resetGraph();
-        }
-    },
     HELP {
         public String getHelp() {
             return "Shows this message.";
@@ -43,29 +14,9 @@ enum Command {
             GraphCLI.showHelp();
         }
     },
-    SHOW {
+    RUN_TEST {
         public String getHelp() {
-            return "Shows the nodes and its adjacent nodes in the graph.";
-        }
-
-        public void execute() {
-            GraphCLI.showGraph();
-        }
-    },
-    SOLVE {
-        public String getHelp() {
-            return "(Ejercicio 4) Si el grafo es aciclico, lista los vertices en orden" +
-                    " topologico. Si es ciclico, lista sus componentes fuertemente" +
-                    " conexas como conjuntos de vertices (Kosaraju).";
-        }
-
-        public void execute() {
-            GraphCLI.solve();
-        }
-    },
-    TEST {
-        public String getHelp() {
-            return "Reads a file with the data for several graphs and uses 'solve' with" +
+            return "Reads a file with the data for several graphs and runs the algorithm with" +
                     " all of them.";
         }
 
@@ -75,8 +26,10 @@ enum Command {
     },
     CREATE_TEST {
         public String getHelp() {
-            return "Creates a random test file. The user has to specify the number of cases," +
-                    " the number of nodes per graph and the name of the file.";
+            return "Creates a random test file. The user has to specify the number of cases, " +
+                    "the number of nodes per graph and the name of the file. This test file isn't " +
+                    "made to be run with gnuplot since all the graphs have the same amount of nodes, but " +
+                    "to test if the algorithm is working properly for small graphs.";
         }
 
         public void execute() {
@@ -86,11 +39,9 @@ enum Command {
     BIG_TEST {
         @Override
         public String getHelp() {
-            return
-                    "Creates a random test file, but each graph has a different size. The first 9 have" +
-                    "1, 2,.. 9 nodes. The next 9 have 10, 20, ... 90 nodes, and so on until the last 9" +
-                    "graphs, which have 1000, 2000, ..., 9000 nodes." +
-                    "This test file is made to be later run with gnuplot.\n";
+            return "Creates a random test file, but each graph has a different size. Starting with a " +
+                    "graph with 1 node, each graph has 100 more nodes than the last one until it almost " +
+                    "reaches 10000 nodes. This test file is made to be later run with gnuplot.\n";
         }
 
         @Override

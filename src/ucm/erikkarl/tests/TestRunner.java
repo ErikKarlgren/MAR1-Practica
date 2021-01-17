@@ -1,8 +1,8 @@
 package ucm.erikkarl.tests;
 
 import ucm.erikkarl.Either;
-import ucm.erikkarl.Exercise4;
-import ucm.erikkarl.Graph;
+import ucm.erikkarl.exercise4.Exercise4;
+import ucm.erikkarl.graph.Graph;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -58,6 +58,6 @@ final class TestRunner {
         elapsedTimeInNs /= loops;
         float elapsedTimeInMs = (float) (elapsedTimeInNs / 1000000.0);
 
-        return new TestResults.Result(elapsedTimeInMs, solution, graph.getNumberOfNodes());
+        return new TestResults.Result(elapsedTimeInMs, solution, graph.getNumberOfNodes(), graph.getNumberOfEdges());
     }
 }

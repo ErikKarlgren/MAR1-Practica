@@ -1,6 +1,6 @@
 package ucm.erikkarl.tests;
 
-import ucm.erikkarl.Graph;
+import ucm.erikkarl.graph.Graph;
 
 import java.io.BufferedReader;
 import java.io.File;
